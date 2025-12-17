@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>IU Cloud Computing</title>
+    <style>
+        body {
+            background-color: #232F3E;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background-color: #f0f4f8;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            text-align: center;
+            min-width: 300px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 18px;
+            color: #333;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #006622;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #004d1a;
+        }
+
+        #response {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #232F3E;
+            word-wrap: break-word;
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(0, 102, 34, 0.1); 
+        }
+    </style>
+    <script>
+        var callAPI = (firstName, lastName) => {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            var raw = JSON.stringify({"firstName": firstName, "lastName": lastName});
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            //##############################################################################################################
+            var awsUrl = "Text durch API-Gatway-URL ersetzen" // <<<----- Hier URL einfügen
+            //##############################################################################################################
+
+            fetch(awsUrl, requestOptions)
+                .then(response => response.json()) 
+                        .then(data => {
+                            document.getElementById("response").innerText = data.message;
+                        })
+                        .catch(error => {
+                            console.error("FETCH ERROR:", error);
+                            document.getElementById("response").innerText = "Fehler beim Abrufen der API";
+        });
+        }
+    </script>
+</head>
+<body>
+    <div class="card">
+        <label for="fName">First Name:</label>
+        <input type="text" id="fName" placeholder="Enter first name">
+
+        <label for="lName">Last Name:</label>
+        <input type="text" id="lName" placeholder="Enter last name">
+
+        <button type="button" onclick="callAPI(document.getElementById('fName').value, document.getElementById('lName').value)">Call API</button>
+
+        <div id="response"></div>
+    </div>
+</body>
+</html>
+
+
